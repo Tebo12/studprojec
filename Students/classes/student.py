@@ -13,9 +13,32 @@ subjects = ['Математика','Физика','Химия']
 students_names = ['Иванов','Петров','Сидоров']
 @dataclass
 class Student:
+    id:int
     name: str
-    achivment: list
 
+
+    def __str__(self):
+        return self.name
+    @staticmethod
+    def add_student(name):
+        db = DataBase()
+        connection = db.getDbConnection()
+        if connection:
+            print("Connection established successfully")
+            db.createStudentsTable(connection)  # This should now print a message
+            data = {'student_name': name}
+            DataBase.insertTable(connection, "Students", data)
+            print("Student addition process completed")
+        else:
+            print("Failed to establish database connection")
+
+    @staticmethod
+    def getStudents():
+        db = DataBase()
+        connection = db.getDbConnection()
+        students = DataBase.selectTable(connection, "Students")
+        studentsList = [Student(id, name) for id, name in students]
+        return studentsList
     def AverageScore(self):
         return round(sum(subject.score for subject in self.achivment) / len(self.achivment), 2)
 
@@ -65,16 +88,5 @@ class Student:
         return Journal
 
 
-    @staticmethod
-    def add_student(name):
-        db = DataBase()
-        connection = db.getDbConnection()
-        if connection:
-            print("Connection established successfully")
-            db.createStudentsTable(connection)  # This should now print a message
-            data = {'student_name': name}
-            DataBase.insertTable(connection, "Students", data)
-            print("Student addition process completed")
-        else:
-            print("Failed to establish database connection")
+
 

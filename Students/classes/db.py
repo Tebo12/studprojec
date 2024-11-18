@@ -138,11 +138,39 @@ class DataBase:
         connection.close()
 
         return result
+    def selectTableWhere(connection, Table,data):
+        connection = sqlite3.connect(connection)
+        cursor = connection.cursor()
+        WhereList=""
+        for column,value in data.items():
+            WhereList = WhereList + column + "=" + str(value) + " AND "
 
+        WhereList = WhereList[:-4]
+        query = "SELECT * FROM " + Table + " WHERE " + WhereList
 
+        cursor.execute(query)
+        result = cursor.fetchall()
+        connection.commit()
+        connection.close()
 
+        return result
 
+    def DeleteData(connection, Table, data):
+        connection = sqlite3.connect(connection)
+        cursor = connection.cursor()
+        WhereList = ""
+        if data != None:
+            WhereList = " WHERE "
+            for column, value in data.items():
+                WhereList = WhereList + column + '=' + str(value) + ' AND '
 
+            WhereList = WhereList[:-4]
+
+        query = "DELETE FROM " + Table + " " + WhereList
+        cursor.execute(query)
+        result = cursor.fetchall()
+        connection.commit()
+        connection.close()
 
 
 
