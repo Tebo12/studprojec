@@ -1,7 +1,7 @@
 #from Students.classes.form import Form
 #from Students.classes.student import Student
 from classes.form import Form
-from classes.student import Student
+from classes.student import Students
 
 
 def FormAddStudent(frame):
@@ -15,12 +15,7 @@ def FormAddStudent(frame):
     btn = Form.create_button(
         frame.obj,
         'Добавить',  # Надпись на кнопке.
-        lambda: Student.add_student(
-            Name.get(),
-            #int(math.get()),
-            #int(phys.get()),
-            #int(chem.get()),
-        ),
+        lambda: Students.add(data={"name":Name.get()}),
         5, 1, 3
 
     )

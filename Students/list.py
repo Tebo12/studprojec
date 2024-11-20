@@ -1,12 +1,12 @@
 import sqlite3
 
 # Establishing a connection to the database
-connection = sqlite3.connect('db/students.db')
+connection = sqlite3.connect('db/DataBase.db')
 cursor = connection.cursor()
 
 
-
-cursor.execute("SELECT * FROM Achivments")
+"-1:14:01"
+cursor.execute("SELECT * FROM Subjects, Students, Achievements")
 Subjects = cursor.fetchall()
 print(Subjects)
 #for subject in Subjects:

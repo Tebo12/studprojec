@@ -1,7 +1,7 @@
 import tkinter as tk
 #from Students.classes import subject
 #from Students.classes.subject import Subject
-from classes.subject import Subject
+from classes.subject import Subjects
 from dataclasses import dataclass
 import pandas as pd
 import random as rnd
@@ -9,35 +9,23 @@ import os
 from tkinter import *
 from dataclasses import dataclass
 from classes.db import DataBase
+from classes.Model import Model
 subjects = ['Математика','Физика','Химия']
 students_names = ['Иванов','Петров','Сидоров']
 @dataclass
-class Student:
-    id:int
+class Students(Model):
     name: str
 
 
     def __str__(self):
         return self.name
-    @staticmethod
-    def add_student(name):
-        db = DataBase()
-        connection = db.getDbConnection()
-        if connection:
-            print("Connection established successfully")
-            db.createStudentsTable(connection)  # This should now print a message
-            data = {'student_name': name}
-            DataBase.insertTable(connection, "Students", data)
-            print("Student addition process completed")
-        else:
-            print("Failed to establish database connection")
 
     @staticmethod
     def getStudents():
-        db = DataBase()
-        connection = db.getDbConnection()
-        students = DataBase.selectTable(connection, "Students")
-        studentsList = [Student(id, name) for id, name in students]
+#        db = DataBase()
+        connection = DataBase.getDbConnection()
+        students = DataBase.selectTable(connection,"Students")
+        studentsList = [Students(id, name) for id, name in students]
         return studentsList
     def AverageScore(self):
         return round(sum(subject.score for subject in self.achivment) / len(self.achivment), 2)
@@ -46,8 +34,8 @@ class Student:
     def CreateStudent(subjects, students_names):
         achivment = []
         for subject in subjects:
-            achivment.append(Subject(subject, rnd.randint(0, 100)))
-        student = Student(students_names[rnd.randint(0, len(students_names) - 1)], achivment)
+            achivment.append(Subjects(subject, rnd.randint(0, 100)))
+        student = Students(students_names[rnd.randint(0, len(students_names) - 1)], achivment)
         return student
 
     @staticmethod
@@ -82,8 +70,8 @@ class Student:
         for ind in Frame.index:
             subjs = []
             for i in range(0, len(subjects)):
-                subjs.append(Subject(subjects[i], Frame[subjects[i]][ind]))
-            Journal.append(Student(Frame['Имя'][ind], subjs))
+                subjs.append(Subjects(subjects[i], Frame[subjects[i]][ind]))
+            Journal.append(Subjects(Frame['Имя'][ind], subjs))
         print(Journal)
         return Journal
 

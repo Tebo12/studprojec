@@ -1,24 +1,24 @@
 import os
 from classes.main import Main
 from classes.db import DataBase
+from classes.Model  import Model
 
-# Assuming this script is in the root directory of your project
-current_dir = os.path.dirname(os.path.abspath(__file__))
-db_dir = os.path.join(current_dir, 'db')
-db_file = os.path.join(db_dir, 'students.db')
-
+# Initialize the main application
 main = Main('Students', '1000x500+10+10')
 main.CreateMenu()
 
-# Ensure the db directory exists
-if not os.path.exists(db_dir):
-    os.makedirs(db_dir)
+# Get the database connection string
+dbConnection = DataBase.getDbConnection()
 
-# Initialize the database connection string
-DataBase.initialize(db_file)
-connectionString = DataBase.getDbConnection()
+# Ensure the "db" directory exists
+if not os.path.isdir("db"):
+    os.mkdir("db")
 
-if not os.path.exists(db_file):
-    DataBase.createDB(connectionString)
+# If the database file does not exist, create tables
+if not os.path.exists(dbConnection):
+    Model.createTables()
+    # Uncomment the next line if you need to explicitly create the database file
+    # DataBase.createDB(dbConnection)
 
+# Run the main application
 main.run()

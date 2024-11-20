@@ -4,7 +4,7 @@ from tkinter import *
 
 
 #from Students.classes.student import Student
-from classes.student import Student
+from classes.student import Students
 from classes.comboBox import Combo
 @dataclass
 class Form():
